@@ -1,24 +1,24 @@
 :root {
-  color-scheme: dark;
-  --bg: #080a0f;
-  --panel: rgba(12, 16, 24, 0.78);
-  --panel-strong: rgba(12, 16, 24, 0.92);
-  --panel-soft: rgba(255, 255, 255, 0.07);
-  --text: #f7f8fb;
-  --muted: #b4becd;
-  --subtle: #7c8798;
-  --line: rgba(255, 255, 255, 0.14);
-  --line-soft: rgba(255, 255, 255, 0.08);
-  --primary: #8fb7ff;
-  --primary-strong: #5f8ff0;
-  --primary-soft: rgba(95, 143, 240, 0.18);
-  --warning: #f5b85b;
-  --warning-soft: rgba(245, 184, 91, 0.16);
-  --danger: #ff8a7a;
-  --danger-soft: rgba(255, 138, 122, 0.16);
-  --success: #5de0a5;
-  --success-soft: rgba(93, 224, 165, 0.14);
-  --shadow: 0 24px 70px rgba(0, 0, 0, 0.42);
+  color-scheme: light;
+  --bg: #edf3f8;
+  --panel: rgba(242, 248, 253, 0.74);
+  --panel-strong: rgba(247, 251, 254, 0.86);
+  --panel-soft: rgba(230, 239, 248, 0.76);
+  --text: #142033;
+  --muted: #5b697c;
+  --subtle: #8390a3;
+  --line: rgba(78, 100, 124, 0.22);
+  --line-soft: rgba(78, 100, 124, 0.14);
+  --primary: #2864e6;
+  --primary-strong: #1f54c8;
+  --primary-soft: rgba(40, 100, 230, 0.12);
+  --warning: #c87917;
+  --warning-soft: rgba(210, 139, 38, 0.14);
+  --danger: #c94b45;
+  --danger-soft: rgba(201, 75, 69, 0.12);
+  --success: #127a56;
+  --success-soft: rgba(18, 122, 86, 0.12);
+  --shadow: 0 22px 70px rgba(67, 86, 108, 0.18);
 }
 
 * {
@@ -80,8 +80,8 @@ p {
 
 .site-backdrop-shade {
   background:
-    linear-gradient(90deg, rgba(5, 8, 13, 0.92) 0%, rgba(7, 10, 17, 0.72) 46%, rgba(8, 10, 16, 0.86) 100%),
-    linear-gradient(180deg, rgba(3, 6, 10, 0.54) 0%, rgba(3, 6, 10, 0.88) 100%);
+    linear-gradient(90deg, rgba(236, 242, 248, 0.92) 0%, rgba(241, 246, 251, 0.76) 46%, rgba(228, 236, 246, 0.9) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(228, 236, 245, 0.88) 100%);
   inset: 0;
   position: absolute;
 }
@@ -127,7 +127,7 @@ p {
 
 .brand-mark {
   align-items: center;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.66);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
@@ -171,7 +171,7 @@ p {
 .sync-chip,
 .cover-kicker,
 .source-tag {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.62);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--muted);
@@ -224,7 +224,7 @@ p {
 }
 
 .cover-stats span {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.62);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--muted);
@@ -270,8 +270,8 @@ p {
 }
 
 .login-form input,
-.select-wrap select {
-  background: rgba(255, 255, 255, 0.07);
+.course-trigger {
+  background: rgba(255, 255, 255, 0.72);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
@@ -284,17 +284,17 @@ p {
 }
 
 .login-form input:focus,
-.select-wrap select:focus {
-  border-color: rgba(143, 183, 255, 0.8);
-  box-shadow: 0 0 0 4px rgba(95, 143, 240, 0.22);
+.course-trigger:focus-visible {
+  border-color: rgba(40, 100, 230, 0.62);
+  box-shadow: 0 0 0 4px rgba(40, 100, 230, 0.14);
 }
 
 .login-form button {
   align-items: center;
-  background: #f7f8fb;
+  background: var(--text);
   border: 0;
   border-radius: 8px;
-  color: #0c1018;
+  color: #ffffff;
   display: inline-flex;
   font-weight: 800;
   gap: 9px;
@@ -307,7 +307,7 @@ p {
 }
 
 .login-form button:hover {
-  background: #dfe8ff;
+  background: #26364f;
   transform: translateY(-1px);
 }
 
@@ -325,7 +325,7 @@ p {
 .topbar {
   align-items: center;
   backdrop-filter: blur(20px);
-  background: rgba(7, 10, 16, 0.72);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   display: grid;
@@ -339,7 +339,7 @@ p {
 }
 
 .topnav {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(226, 235, 245, 0.82);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   gap: 3px;
@@ -358,8 +358,9 @@ p {
 }
 
 .topnav span.active {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.84);
   color: var(--text);
+  box-shadow: 0 8px 20px rgba(91, 105, 124, 0.12);
 }
 
 .topbar-actions {
@@ -371,7 +372,7 @@ p {
 }
 
 .logout-button {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.68);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
@@ -384,7 +385,7 @@ p {
 .logout-button:hover,
 .icon-button:hover,
 .segmented-control button:hover {
-  background: rgba(255, 255, 255, 0.13);
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .dashboard-hero {
@@ -448,7 +449,7 @@ p {
 
 .metric {
   backdrop-filter: blur(18px);
-  background: rgba(12, 16, 24, 0.74);
+  background: rgba(255, 255, 255, 0.64);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   min-height: 118px;
@@ -483,7 +484,7 @@ p {
 }
 
 .metric.muted strong {
-  color: #d6dde8;
+  color: #516174;
 }
 
 .status-strip,
@@ -491,7 +492,7 @@ p {
 .task-row,
 .empty-state {
   backdrop-filter: blur(18px);
-  background: rgba(12, 16, 24, 0.78);
+  background: rgba(255, 255, 255, 0.66);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
 }
@@ -532,6 +533,12 @@ p {
   gap: 12px;
   margin-bottom: 14px;
   padding: 12px;
+  position: relative;
+  z-index: 4;
+}
+
+.app-shell > .toolbar {
+  z-index: 30;
 }
 
 .toolbar-title {
@@ -544,38 +551,90 @@ p {
   margin-right: auto;
 }
 
-.select-wrap {
+.course-select,
+.filter-group {
   color: var(--subtle);
   display: grid;
   gap: 5px;
+}
+
+.course-select {
   min-width: 220px;
   position: relative;
 }
 
-.select-wrap span {
+.course-select > span,
+.filter-group > span {
   font-size: 0.72rem;
   font-weight: 800;
   padding-left: 1px;
   text-transform: uppercase;
 }
 
-.select-wrap select {
-  appearance: none;
+.course-trigger {
+  align-items: center;
+  display: inline-flex;
+  gap: 12px;
+  justify-content: space-between;
   max-width: 290px;
   padding: 0 38px 0 12px;
   width: 100%;
 }
 
-.select-wrap svg {
-  bottom: 14px;
+.course-trigger span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.course-trigger svg {
   color: var(--muted);
-  pointer-events: none;
+  flex: 0 0 auto;
+  transition: transform 160ms ease;
+}
+
+.course-trigger svg.is-open {
+  transform: rotate(180deg);
+}
+
+.course-menu {
+  backdrop-filter: blur(20px);
+  background: rgba(247, 251, 254, 0.98);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 18px 44px rgba(67, 86, 108, 0.18);
+  display: grid;
+  gap: 4px;
+  left: 0;
+  max-height: 280px;
+  min-width: min(360px, 86vw);
+  overflow: auto;
+  padding: 6px;
   position: absolute;
-  right: 12px;
+  top: calc(100% + 8px);
+  z-index: 20;
+}
+
+.course-menu button {
+  background: transparent;
+  border: 0;
+  border-radius: 7px;
+  color: var(--muted);
+  min-height: 38px;
+  overflow-wrap: anywhere;
+  padding: 9px 10px;
+  text-align: left;
+}
+
+.course-menu button:hover,
+.course-menu button.active {
+  background: var(--panel-soft);
+  color: var(--text);
 }
 
 .segmented-control {
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(228, 237, 247, 0.82);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   display: inline-grid;
@@ -597,13 +656,16 @@ p {
 }
 
 .segmented-control button.active {
-  background: rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.9);
   color: var(--text);
+  box-shadow: 0 8px 18px rgba(79, 95, 113, 0.12);
 }
 
 .task-list {
   display: grid;
   gap: 10px;
+  position: relative;
+  z-index: 1;
 }
 
 .task-row {
@@ -648,7 +710,7 @@ p {
 }
 
 .meta-dot {
-  background: rgba(180, 190, 205, 0.7);
+  background: rgba(91, 105, 124, 0.46);
   border-radius: 50%;
   flex: 0 0 auto;
   height: 4px;
@@ -692,7 +754,7 @@ p {
 }
 
 .status-pill.muted {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(228, 237, 247, 0.82);
   color: var(--muted);
 }
 
@@ -703,7 +765,7 @@ p {
 
 .icon-button {
   align-items: center;
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.66);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
@@ -817,8 +879,8 @@ p {
     grid-template-columns: 1fr;
   }
 
-  .select-wrap,
-  .select-wrap select,
+  .course-select,
+  .course-trigger,
   .segmented-control {
     max-width: none;
     width: 100%;

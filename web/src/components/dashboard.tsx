@@ -44,6 +44,7 @@ const fullDateFormatter = new Intl.DateTimeFormat("pt-BR", {
 export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Props) {
   const [tasks, setTasks] = useState(initialTasks);
   const [course, setCourse] = useState("all");
+  const [courseMenuOpen, setCourseMenuOpen] = useState(false);
   const [status, setStatus] = useState<StatusFilter>("pending");
   const [urgency, setUrgency] = useState<UrgencyFilter>("all");
   const [updatingId, setUpdatingId] = useState<string | null>(null);
@@ -110,6 +111,7 @@ export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Prop
   }
 
   const latestSync = syncRuns[0];
+  const selectedCourseLabel = course === "all" ? "Todas as disciplinas" : course;
 
   return (
     <main className="app-shell">
@@ -185,19 +187,60 @@ export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Prop
           <Filter size={16} />
           <span>Filtros</span>
         </div>
-        <label className="select-wrap">
+        <div
+          className="course-select"
+          onBlur={(event) => {
+            const nextFocused = event.relatedTarget;
+            if (!(nextFocused instanceof Node) || !event.currentTarget.contains(nextFocused)) {
+              setCourseMenuOpen(false);
+            }
+          }}
+        >
           <span>Disciplina</span>
-          <select aria-label="Disciplina" value={course} onChange={(event) => setCourse(event.target.value)}>
-            <option value="all">Todas as disciplinas</option>
+          <button
+            aria-expanded={courseMenuOpen}
+            aria-haspopup="listbox"
+            className="course-trigger"
+            type="button"
+            onClick={() => setCourseMenuOpen((current) => !current)}
+          >
+            <span>{selectedCourseLabel}</span>
+            <ChevronDown className={courseMenuOpen ? "is-open" : ""} size={16} />
+          </button>
+          {courseMenuOpen ? (
+            <div className="course-menu" role="listbox" aria-label="Disciplina">
+              <button
+                className={course === "all" ? "active" : ""}
+                role="option"
+                aria-selected={course === "all"}
+                type="button"
+                onClick={() => {
+                  setCourse("all");
+                  setCourseMenuOpen(false);
+                }}
+              >
+                Todas as disciplinas
+              </button>
             {courses.map((item) => (
-              <option key={item} value={item}>
+              <button
+                className={course === item ? "active" : ""}
+                key={item}
+                role="option"
+                aria-selected={course === item}
+                type="button"
+                onClick={() => {
+                  setCourse(item);
+                  setCourseMenuOpen(false);
+                }}
+              >
                 {item}
-              </option>
+              </button>
             ))}
-          </select>
-          <ChevronDown size={16} />
-        </label>
+            </div>
+          ) : null}
+        </div>
         <SegmentedFilter
+          label="Status"
           value={status}
           options={[
             ["pending", "Pendentes"],
@@ -207,6 +250,7 @@ export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Prop
           onChange={setStatus}
         />
         <SegmentedFilter
+          label="Prazo"
           value={urgency}
           options={[
             ["all", "Prazo"],
@@ -279,26 +323,31 @@ function Metric({ label, value, tone, caption }: { label: string; value: number;
 }
 
 function SegmentedFilter<T extends string>({
+  label,
   value,
   options,
   onChange
 }: {
+  label: string;
   value: T;
   options: [T, string][];
   onChange: (value: T) => void;
 }) {
   return (
-    <div className="segmented-control">
-      {options.map(([optionValue, label]) => (
-        <button
-          className={optionValue === value ? "active" : ""}
-          key={optionValue}
-          type="button"
-          onClick={() => onChange(optionValue)}
-        >
-          {label}
-        </button>
-      ))}
+    <div className="filter-group">
+      <span>{label}</span>
+      <div className="segmented-control" aria-label={label}>
+        {options.map(([optionValue, optionLabel]) => (
+          <button
+            className={optionValue === value ? "active" : ""}
+            key={optionValue}
+            type="button"
+            onClick={() => onChange(optionValue)}
+          >
+            {optionLabel}
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
