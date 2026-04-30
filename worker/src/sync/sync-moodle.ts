@@ -67,21 +67,46 @@ export async function syncMoodleTasks() {
 }
 
 async function extractWithFallback(config: ReturnType<typeof getConfig>) {
+  const tasks = [];
+  let playwrightError: Error | null = null;
+
   try {
-    const tasks = await scrapeMoodleTasks(config);
-    return { status: "success" as const, tasks, primarySource: "playwright", errorMessage: null };
+    tasks.push(...(await scrapeMoodleTasks(config)));
   } catch (error) {
+    playwrightError = error instanceof Error ? error : new Error("Playwright failed");
+  }
+
+  if (config.MOODLE_ICS_URL) {
+    const icsTasks = await fetchIcsTasks(config.MOODLE_ICS_URL);
+    tasks.push(...icsTasks);
+  }
+
+  if (tasks.length === 0 && playwrightError) {
     if (!config.MOODLE_ICS_URL) {
-      throw error;
+      throw playwrightError;
     }
 
-    const tasks = await fetchIcsTasks(config.MOODLE_ICS_URL);
+    return {
+      status: "failed" as const,
+      tasks,
+      primarySource: "none",
+      errorMessage: playwrightError.message
+    };
+  }
+
+  if (playwrightError) {
     return {
       status: "partial" as const,
       tasks,
       primarySource: "ics",
-      errorMessage: error instanceof Error ? error.message : "Playwright failed; ICS fallback used"
+      errorMessage: playwrightError.message
     };
   }
-}
 
+  return {
+    status: "success" as const,
+    tasks,
+    primarySource: config.MOODLE_ICS_URL ? "playwright+ics" : "playwright",
+    errorMessage: null
+  };
+}
