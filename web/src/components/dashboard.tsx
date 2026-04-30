@@ -1,7 +1,18 @@
 "use client";
 
 import clsx from "clsx";
-import { Check, Clock3, ExternalLink, Filter, LogOut, RefreshCw, Undo2 } from "lucide-react";
+import {
+  BookOpenCheck,
+  CalendarClock,
+  Check,
+  ChevronDown,
+  Clock3,
+  ExternalLink,
+  Filter,
+  LogOut,
+  RefreshCw,
+  Undo2
+} from "lucide-react";
 import { useMemo, useState } from "react";
 import type { SerializedSyncRun, SerializedTask } from "@/lib/serializers";
 
@@ -102,21 +113,59 @@ export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Prop
 
   return (
     <main className="app-shell">
+      <div className="site-backdrop" aria-hidden="true">
+        <video src="/moodle-cover.mp4" autoPlay muted loop playsInline />
+        <div className="site-backdrop-shade" />
+      </div>
+
       <header className="topbar">
-        <div>
-          <p className="eyebrow">Moodle AI</p>
-          <h1>Tarefas Unisinos</h1>
+        <div className="brand-cluster">
+          <div className="brand-mark">
+            <BookOpenCheck size={21} />
+          </div>
+          <div>
+            <p className="eyebrow">Moodle AI</p>
+            <strong>Tarefas Unisinos</strong>
+          </div>
         </div>
-        <button className="icon-button" type="button" onClick={logout} aria-label="Sair" title="Sair">
-          <LogOut size={18} />
-        </button>
+        <nav className="topnav" aria-label="Visões do dashboard">
+          <span className="active">Painel</span>
+          <span>Tarefas</span>
+          <span>Sync</span>
+        </nav>
+        <div className="topbar-actions">
+          <span className="sync-chip">
+            <CalendarClock size={15} />
+            {latestSync ? formatDate(latestSync.startedAt) : "Sem sync"}
+          </span>
+          <button className="logout-button" type="button" onClick={logout}>
+            <LogOut size={16} />
+            <span>Sair</span>
+          </button>
+        </div>
       </header>
 
+      <section className="dashboard-hero" aria-labelledby="dashboard-title">
+        <div className="hero-copy">
+          <p className="eyebrow">Agenda acadêmica</p>
+          <h1 id="dashboard-title">Controle suas entregas sem abrir o Moodle toda hora.</h1>
+          <p>
+            Priorize prazos, acompanhe o último sync e marque o que já foi resolvido sem perder o
+            status original da disciplina.
+          </p>
+        </div>
+        <div className="hero-focus">
+          <span>Próximas 48h</span>
+          <strong>{stats.next48h}</strong>
+          <small>{stats.overdue > 0 ? `${stats.overdue} vencida(s)` : "Nenhuma vencida"}</small>
+        </div>
+      </section>
+
       <section className="summary-grid" aria-label="Resumo">
-        <Metric label="Pendentes" value={stats.pending} tone="primary" />
-        <Metric label="Próximas 48h" value={stats.next48h} tone="warning" />
-        <Metric label="Vencidas" value={stats.overdue} tone="danger" />
-        <Metric label="Total" value={stats.total} tone="muted" />
+        <Metric label="Pendentes" value={stats.pending} tone="primary" caption="A fazer" />
+        <Metric label="Próximas 48h" value={stats.next48h} tone="warning" caption="Urgentes" />
+        <Metric label="Vencidas" value={stats.overdue} tone="danger" caption="Atrasadas" />
+        <Metric label="Total" value={stats.total} tone="muted" caption="Monitoradas" />
       </section>
 
       <section className="status-strip">
@@ -136,14 +185,18 @@ export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Prop
           <Filter size={16} />
           <span>Filtros</span>
         </div>
-        <select aria-label="Disciplina" value={course} onChange={(event) => setCourse(event.target.value)}>
-          <option value="all">Todas as disciplinas</option>
-          {courses.map((item) => (
-            <option key={item} value={item}>
-              {item}
-            </option>
-          ))}
-        </select>
+        <label className="select-wrap">
+          <span>Disciplina</span>
+          <select aria-label="Disciplina" value={course} onChange={(event) => setCourse(event.target.value)}>
+            <option value="all">Todas as disciplinas</option>
+            {courses.map((item) => (
+              <option key={item} value={item}>
+                {item}
+              </option>
+            ))}
+          </select>
+          <ChevronDown size={16} />
+        </label>
         <SegmentedFilter
           value={status}
           options={[
@@ -186,6 +239,8 @@ export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Prop
                   <span className="meta-dot" />
                   <Clock3 size={14} />
                   <span>{task.dueAt ? formatDate(task.dueAt) : "Sem prazo"}</span>
+                  <span className="meta-dot" />
+                  <span className="source-tag">{task.source}</span>
                 </div>
               </div>
               <div className="task-actions">
@@ -213,11 +268,12 @@ export function Dashboard({ initialTasks, courses, syncRuns, generatedAt }: Prop
   );
 }
 
-function Metric({ label, value, tone }: { label: string; value: number; tone: string }) {
+function Metric({ label, value, tone, caption }: { label: string; value: number; tone: string; caption: string }) {
   return (
     <div className={clsx("metric", tone)}>
       <span>{label}</span>
       <strong>{value}</strong>
+      <small>{caption}</small>
     </div>
   );
 }

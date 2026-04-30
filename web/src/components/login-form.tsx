@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowRight, LockKeyhole } from "lucide-react";
+import { ArrowRight, BookOpenCheck, LockKeyhole, ShieldCheck, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
@@ -34,14 +34,57 @@ export function LoginForm() {
 
   return (
     <main className="login-shell">
-      <section className="login-panel" aria-labelledby="login-title">
-        <div className="brand-mark" aria-hidden="true">
-          <LockKeyhole size={22} />
+      <div className="site-backdrop" aria-hidden="true">
+        <video src="/moodle-cover.mp4" autoPlay muted loop playsInline />
+        <div className="site-backdrop-shade" />
+      </div>
+
+      <header className="cover-header">
+        <div className="brand-cluster">
+          <div className="brand-mark">
+            <BookOpenCheck size={21} />
+          </div>
+          <div>
+            <p className="eyebrow">Moodle AI</p>
+            <strong>Tarefas Unisinos</strong>
+          </div>
         </div>
-        <div>
-          <p className="eyebrow">Moodle AI</p>
-          <h1 id="login-title">Acessar dashboard</h1>
+        <div className="cover-header-meta">
+          <span>
+            <ShieldCheck size={15} />
+            Acesso privado
+          </span>
         </div>
+      </header>
+
+      <section className="login-grid" aria-labelledby="login-title">
+        <div className="cover-copy">
+          <span className="cover-kicker">
+            <Sparkles size={15} />
+            Sync automático com Moodle
+          </span>
+          <h1 id="login-title">Uma central elegante para não perder nenhuma entrega.</h1>
+          <p>
+            O painel consolida prazos, urgência e histórico de sincronização em uma experiência
+            rápida, protegida e feita para consulta diária.
+          </p>
+          <div className="cover-stats" aria-label="Recursos">
+            <span>ICS fallback</span>
+            <span>Playwright worker</span>
+            <span>Postgres</span>
+          </div>
+        </div>
+
+        <div className="login-panel">
+          <div className="login-panel-header">
+            <div className="brand-mark lock" aria-hidden="true">
+              <LockKeyhole size={21} />
+            </div>
+            <div>
+              <p className="eyebrow">Dashboard</p>
+              <h2>Acessar painel</h2>
+            </div>
+          </div>
         <form className="login-form" onSubmit={handleSubmit}>
           <label htmlFor="password">Senha</label>
           <input
@@ -59,8 +102,8 @@ export function LoginForm() {
             <ArrowRight size={18} />
           </button>
         </form>
+        </div>
       </section>
     </main>
   );
 }
-
