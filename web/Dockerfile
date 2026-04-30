@@ -12,5 +12,4 @@ COPY . .
 RUN pnpm --filter web build
 
 EXPOSE 3000
-CMD ["sh", "-c", "pnpm --filter @moodle-ai/db migrate && pnpm --filter web start"]
-
+CMD ["pnpm", "--filter", "web", "start"]

@@ -1,5 +1,23 @@
 import { z } from "zod";
 
+const booleanFromEnv = z.preprocess((value) => {
+  if (typeof value !== "string") {
+    return value;
+  }
+
+  const normalized = value.trim().toLowerCase();
+
+  if (["1", "true", "yes", "on"].includes(normalized)) {
+    return true;
+  }
+
+  if (["0", "false", "no", "off", ""].includes(normalized)) {
+    return false;
+  }
+
+  return value;
+}, z.boolean());
+
 const envSchema = z.object({
   DATABASE_URL: z.string().min(1),
   MOODLE_BASE_URL: z.string().url().default("https://moodle.unisinos.br"),
@@ -7,9 +25,9 @@ const envSchema = z.object({
   MOODLE_PASSWORD: z.string().optional(),
   MOODLE_ICS_URL: z.string().url().optional().or(z.literal("")),
   SYNC_CRON: z.string().default("0 */6 * * *"),
-  SYNC_ON_START: z.coerce.boolean().default(true),
+  SYNC_ON_START: booleanFromEnv.default(true),
   NOTIFY_DUE_HOURS: z.coerce.number().int().positive().default(48),
-  AGENT_ENABLED: z.coerce.boolean().default(false),
+  AGENT_ENABLED: booleanFromEnv.default(false),
   OPENAI_API_KEY: z.string().optional(),
   OPENAI_MODEL: z.string().default("gpt-4.1-mini"),
   TELEGRAM_BOT_TOKEN: z.string().optional(),
@@ -27,4 +45,3 @@ export function getConfig() {
 
   return config;
 }
-

@@ -17,6 +17,7 @@ services:
       retries: 10
 
   web:
+    image: moodle-ai-web
     build:
       context: .
       dockerfile: web/Dockerfile
@@ -26,10 +27,25 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgres://moodle:moodle@db:5432/moodle_ai}
     depends_on:
-      db:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
     ports:
       - "3000:3000"
+
+  migrate:
+    image: moodle-ai-web
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    restart: "no"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgres://moodle:moodle@db:5432/moodle_ai}
+    depends_on:
+      db:
+        condition: service_healthy
+    command: ["pnpm", "--filter", "@moodle-ai/db", "migrate"]
 
   worker:
     build:
@@ -41,8 +57,8 @@ services:
     environment:
       DATABASE_URL: ${DATABASE_URL:-postgres://moodle:moodle@db:5432/moodle_ai}
     depends_on:
-      db:
-        condition: service_healthy
+      migrate:
+        condition: service_completed_successfully
 
   caddy:
     image: caddy:2-alpine

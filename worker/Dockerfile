@@ -12,5 +12,4 @@ RUN pnpm --filter worker exec playwright install --with-deps chromium
 COPY . .
 RUN pnpm --filter worker build
 
-CMD ["sh", "-c", "pnpm --filter @moodle-ai/db migrate && pnpm --filter worker start"]
-
+CMD ["pnpm", "--filter", "worker", "start"]
