@@ -1,0 +1,15 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+node_modules
+.next
+dist
+coverage
+playwright-report
+test-results
+*.log
+*.tsbuildinfo
+postgres-data
+caddy-data
+caddy-config
