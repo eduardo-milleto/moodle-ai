@@ -55,6 +55,23 @@ export async function listCourses() {
   return rows.map((row) => row.course);
 }
 
+export async function listActivePendingTasks() {
+  const db = getDb();
+  const now = new Date();
+
+  return db
+    .select()
+    .from(tasks)
+    .where(
+      and(
+        eq(tasks.manuallyDone, false),
+        or(eq(tasks.moodleStatus, "pending"), eq(tasks.moodleStatus, "unknown")),
+        or(isNull(tasks.dueAt), gte(tasks.dueAt, now))
+      )
+    )
+    .orderBy(sql`${tasks.dueAt} asc nulls last`, asc(tasks.course), asc(tasks.title));
+}
+
 export async function getLatestSyncRuns(limit = 5) {
   const db = getDb();
 
@@ -73,6 +90,12 @@ export async function setTaskDone(id: string, manuallyDone: boolean) {
 }
 
 export async function upsertTasks(inputs: TaskInput[]) {
+  const results = await upsertTasksWithStatus(inputs);
+
+  return results.map((result) => result.task);
+}
+
+export async function upsertTasksWithStatus(inputs: TaskInput[]) {
   const db = getDb();
   const parsed = inputs.map((input) => taskInputSchema.parse(input));
 
@@ -80,7 +103,16 @@ export async function upsertTasks(inputs: TaskInput[]) {
     return [];
   }
 
-  return db
+  const existingWhere = parsed.map((task) =>
+    and(eq(tasks.source, task.source), eq(tasks.externalId, task.externalId))
+  );
+  const existing = await db
+    .select({ source: tasks.source, externalId: tasks.externalId })
+    .from(tasks)
+    .where(or(...existingWhere));
+  const existingKeys = new Set(existing.map((task) => taskKey(task.source, task.externalId)));
+
+  const upserted = await db
     .insert(tasks)
     .values(
       parsed.map((task) => ({
@@ -103,6 +135,15 @@ export async function upsertTasks(inputs: TaskInput[]) {
       }
     })
     .returning();
+
+  return upserted.map((task) => ({
+    task,
+    isNew: !existingKeys.has(taskKey(task.source, task.externalId))
+  }));
+}
+
+function taskKey(source: string, externalId: string) {
+  return `${source}\u0000${externalId}`;
 }
 
 export async function createSyncRun(input: Pick<NewSyncRun, "source" | "metadata">) {

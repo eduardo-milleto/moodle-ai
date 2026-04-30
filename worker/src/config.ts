@@ -24,7 +24,7 @@ const envSchema = z.object({
   MOODLE_USERNAME: z.string().optional(),
   MOODLE_PASSWORD: z.string().optional(),
   MOODLE_ICS_URL: z.string().url().optional().or(z.literal("")),
-  SYNC_CRON: z.string().default("0 */6 * * *"),
+  SYNC_CRON: z.string().default("0 */12 * * *"),
   SYNC_ON_START: booleanFromEnv.default(true),
   NOTIFY_DUE_HOURS: z.coerce.number().int().positive().default(48),
   AGENT_ENABLED: booleanFromEnv.default(false),

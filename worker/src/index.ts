@@ -1,10 +1,15 @@
 import cron from "node-cron";
 import { closeDb } from "@moodle-ai/db";
 import { getConfig } from "./config";
+import { startTelegramCommandPolling } from "./notifications/telegram";
 import { syncMoodleTasks } from "./sync/sync-moodle";
 
 const config = getConfig();
 let running = false;
+const stopTelegramPolling = startTelegramCommandPolling({
+  botToken: config.TELEGRAM_BOT_TOKEN,
+  chatId: config.TELEGRAM_CHAT_ID
+});
 
 async function runSync() {
   if (running) {
@@ -33,14 +38,15 @@ cron.schedule(config.SYNC_CRON, () => {
 });
 
 process.on("SIGTERM", async () => {
+  stopTelegramPolling();
   await closeDb();
   process.exit(0);
 });
 
 process.on("SIGINT", async () => {
+  stopTelegramPolling();
   await closeDb();
   process.exit(0);
 });
 
 console.log(`Worker scheduled with cron "${config.SYNC_CRON}"`);
-

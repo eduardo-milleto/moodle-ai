@@ -3,12 +3,12 @@ import {
   findTasksDueForNotification,
   finishSyncRun,
   markTasksNotified,
-  upsertTasks
+  upsertTasksWithStatus
 } from "@moodle-ai/db";
 import { getConfig } from "../config";
 import { fetchIcsTasks } from "../ics/fetch-ics";
 import { scrapeMoodleTasks } from "../moodle/playwright-scraper";
-import { sendTelegramDueDigest } from "../notifications/telegram";
+import { sendTelegramDueDigest, sendTelegramNewTaskDigest } from "../notifications/telegram";
 import { normalizeExtractedTask } from "../types";
 
 export async function syncMoodleTasks() {
@@ -24,8 +24,17 @@ export async function syncMoodleTasks() {
   try {
     const extraction = await extractWithFallback(config);
     const normalized = extraction.tasks.map(normalizeExtractedTask);
-    const upserted = await upsertTasks(normalized);
-    const dueTasks = await findTasksDueForNotification(config.NOTIFY_DUE_HOURS);
+    const upserted = await upsertTasksWithStatus(normalized);
+    const newTasks = upserted.filter((result) => result.isNew).map((result) => result.task);
+    const newTaskIds = new Set(newTasks.map((task) => task.id));
+    const newTasksNotified = await sendTelegramNewTaskDigest({
+      botToken: config.TELEGRAM_BOT_TOKEN,
+      chatId: config.TELEGRAM_CHAT_ID,
+      tasks: newTasks
+    });
+    const dueTasks = (await findTasksDueForNotification(config.NOTIFY_DUE_HOURS)).filter(
+      (task) => !newTaskIds.has(task.id)
+    );
     const notified = await sendTelegramDueDigest({
       botToken: config.TELEGRAM_BOT_TOKEN,
       chatId: config.TELEGRAM_CHAT_ID,
@@ -44,6 +53,7 @@ export async function syncMoodleTasks() {
       metadata: {
         ...run.metadata,
         primarySource: extraction.primarySource,
+        newTasksNotified: newTasksNotified ? newTasks.length : 0,
         notified: notified ? dueTasks.length : 0
       }
     });
@@ -52,6 +62,7 @@ export async function syncMoodleTasks() {
       status: extraction.status,
       tasksSeen: extraction.tasks.length,
       tasksUpserted: upserted.length,
+      newTasksNotified: newTasksNotified ? newTasks.length : 0,
       notified: notified ? dueTasks.length : 0
     };
   } catch (error) {

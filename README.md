@@ -81,7 +81,8 @@ TELEGRAM_CHAT_ID=
 NOTIFY_DUE_HOURS=48
 ```
 
-Se essas variáveis ficarem vazias, o worker sincroniza sem enviar alertas.
+Se essas variáveis ficarem vazias, o worker sincroniza sem enviar alertas. Com Telegram configurado, o
+worker também responde ao comando `/tarefas` com as tarefas em andamento que ainda não estão vencidas.
 
 ## Deploy na VPS
 
@@ -125,4 +126,3 @@ Então suba Caddy:
 ```bash
 docker compose --profile caddy up -d --build
 ```
-
