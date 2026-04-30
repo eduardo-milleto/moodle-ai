@@ -1,9 +1,9 @@
 :root {
   color-scheme: light;
   --bg: #edf3f8;
-  --panel: rgba(242, 248, 253, 0.74);
-  --panel-strong: rgba(247, 251, 254, 0.86);
-  --panel-soft: rgba(230, 239, 248, 0.76);
+  --panel: rgba(242, 248, 253, 0.48);
+  --panel-strong: rgba(248, 252, 255, 0.58);
+  --panel-soft: rgba(226, 238, 248, 0.58);
   --text: #142033;
   --muted: #5b697c;
   --subtle: #8390a3;
@@ -18,7 +18,7 @@
   --danger-soft: rgba(201, 75, 69, 0.12);
   --success: #127a56;
   --success-soft: rgba(18, 122, 86, 0.12);
-  --shadow: 0 22px 70px rgba(67, 86, 108, 0.18);
+  --shadow: 0 22px 70px rgba(67, 86, 108, 0.14);
 }
 
 * {
@@ -72,16 +72,18 @@ p {
 }
 
 .site-backdrop video {
+  filter: saturate(1.14) contrast(1.04) brightness(1.06);
   height: 100%;
   object-fit: cover;
+  opacity: 0.96;
   transform: scale(1.02);
   width: 100%;
 }
 
 .site-backdrop-shade {
   background:
-    linear-gradient(90deg, rgba(236, 242, 248, 0.92) 0%, rgba(241, 246, 251, 0.76) 46%, rgba(228, 236, 246, 0.9) 100%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.42) 0%, rgba(228, 236, 245, 0.88) 100%);
+    linear-gradient(90deg, rgba(236, 242, 248, 0.52) 0%, rgba(246, 250, 253, 0.24) 46%, rgba(225, 236, 247, 0.5) 100%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.1) 0%, rgba(226, 237, 247, 0.34) 100%);
   inset: 0;
   position: absolute;
 }
@@ -127,7 +129,7 @@ p {
 
 .brand-mark {
   align-items: center;
-  background: rgba(255, 255, 255, 0.66);
+  background: rgba(255, 255, 255, 0.5);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
@@ -171,7 +173,7 @@ p {
 .sync-chip,
 .cover-kicker,
 .source-tag {
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.46);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--muted);
@@ -224,7 +226,7 @@ p {
 }
 
 .cover-stats span {
-  background: rgba(255, 255, 255, 0.62);
+  background: rgba(255, 255, 255, 0.46);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   color: var(--muted);
@@ -271,7 +273,7 @@ p {
 
 .login-form input,
 .course-trigger {
-  background: rgba(255, 255, 255, 0.72);
+  background: rgba(255, 255, 255, 0.56);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
@@ -325,7 +327,7 @@ p {
 .topbar {
   align-items: center;
   backdrop-filter: blur(20px);
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.48);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   display: grid;
@@ -339,7 +341,7 @@ p {
 }
 
 .topnav {
-  background: rgba(226, 235, 245, 0.82);
+  background: rgba(226, 235, 245, 0.56);
   border: 1px solid var(--line-soft);
   border-radius: 999px;
   gap: 3px;
@@ -358,7 +360,7 @@ p {
 }
 
 .topnav span.active {
-  background: rgba(255, 255, 255, 0.84);
+  background: rgba(255, 255, 255, 0.72);
   color: var(--text);
   box-shadow: 0 8px 20px rgba(91, 105, 124, 0.12);
 }
@@ -372,7 +374,7 @@ p {
 }
 
 .logout-button {
-  background: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.5);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
@@ -385,7 +387,7 @@ p {
 .logout-button:hover,
 .icon-button:hover,
 .segmented-control button:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.72);
 }
 
 .dashboard-hero {
@@ -449,7 +451,7 @@ p {
 
 .metric {
   backdrop-filter: blur(18px);
-  background: rgba(255, 255, 255, 0.64);
+  background: rgba(255, 255, 255, 0.46);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   min-height: 118px;
@@ -492,7 +494,7 @@ p {
 .task-row,
 .empty-state {
   backdrop-filter: blur(18px);
-  background: rgba(255, 255, 255, 0.66);
+  background: rgba(255, 255, 255, 0.48);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
 }
@@ -634,7 +636,7 @@ p {
 }
 
 .segmented-control {
-  background: rgba(228, 237, 247, 0.82);
+  background: rgba(228, 237, 247, 0.56);
   border: 1px solid var(--line-soft);
   border-radius: 8px;
   display: inline-grid;
@@ -656,7 +658,7 @@ p {
 }
 
 .segmented-control button.active {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.74);
   color: var(--text);
   box-shadow: 0 8px 18px rgba(79, 95, 113, 0.12);
 }
@@ -765,7 +767,7 @@ p {
 
 .icon-button {
   align-items: center;
-  background: rgba(255, 255, 255, 0.66);
+  background: rgba(255, 255, 255, 0.5);
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
