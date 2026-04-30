@@ -1,3 +1,7 @@
+http://72.60.252.91 {
+	redir https://{$APP_DOMAIN:localhost}{uri} permanent
+}
+
 {$APP_DOMAIN:localhost} {
 	reverse_proxy web:3000
 }
